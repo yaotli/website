@@ -1,24 +1,11 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set( echo = TRUE )
-
+``` r
 require( parallel )
-require( plotly )
-
 ```
 
+    ## Loading required package: parallel
 
-
-```{r main, result = 'hide', warning=FALSE, message=FALSE }
-
-
-## ALL CODES BY YEN-CHUNG CHEN
-
+``` r
 options(rgl.printRglwidget = TRUE)
 numCores = detectCores()
 
@@ -32,7 +19,7 @@ specificity = seq(0.95, 1, by = 0.001)
 
 param_grid = expand.grid(prevalence = prevalence, sensitivity = sensitivity, specificity = specificity)
 
-SUB_param_grid_i = sample( size = 5000, dim( param_grid )[1] )
+SUB_param_grid_i = sample( size = 1000, dim( param_grid )[1] )
 SUB_param_grid   = param_grid[ SUB_param_grid_i,  ]
 
 likelihood = 
@@ -59,13 +46,34 @@ likelihood =
           mc.cores = numCores )
 
 SUB_param_grid$elikelihood = likelihood
-
-
 ```
 
-```{r plot, error=FALSE, warning=FALSE, message=FALSE}
+``` r
+require( plotly )
+```
 
+    ## Loading required package: plotly
 
+    ## Loading required package: ggplot2
+
+    ## Warning: package 'ggplot2' was built under R version 3.5.2
+
+    ## 
+    ## Attaching package: 'plotly'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     last_plot
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     layout
+
+``` r
 fig = plot_ly( SUB_param_grid[ SUB_param_grid$elikelihood > 1e-4, ], 
                 x = ~prevalence, 
                 y = ~sensitivity, 
@@ -87,7 +95,4 @@ fig = fig %>% layout(scene = list( xaxis = list(title = 'Prevalence'),
 fig
 ```
 
-
-
-                   
-                   
+![](test_files/figure-gfm/plot-1.png)<!-- -->
