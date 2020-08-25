@@ -6,6 +6,7 @@ require( parallel )
     ## Loading required package: parallel
 
 ``` r
+options(rgl.printRglwidget = TRUE)
 numCores = detectCores()
 
 
